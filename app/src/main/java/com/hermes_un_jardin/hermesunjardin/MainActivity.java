@@ -1,20 +1,25 @@
 package com.hermes_un_jardin.hermesunjardin;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.hermes_un_jardin.hermesunjardin.view.NavDrawer;
+import com.hermes_un_jardin.hermesunjardin.view.PictureTextFragment;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
     private ActionBar mActionBar;
     private NavDrawer mDrawer;
     private boolean mIsDrawerOpen = false;
+    private ViewPager mMainBoard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +35,46 @@ public class MainActivity extends Activity {
     }
 
     private void initData() {
-
     }
 
     private void initView() {
         mActionBar = getActionBar();
         mDrawer = (NavDrawer) findViewById(R.id.nav_drawer);
+        mMainBoard = (ViewPager) findViewById(R.id.main_board);
 
         //
         mActionBar.setHomeButtonEnabled(true);
         mActionBar.setDisplayShowHomeEnabled(true);
+
+        mMainBoard.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public int getCount() {
+                return 5;
+            }
+
+            @Override
+            public Fragment getItem(int position) {
+                switch (position) {
+                    case 0:
+                        return new PictureTextFragment();
+
+                    case 1:
+                        return new PictureTextFragment();
+
+                    case 2:
+                        return new PictureTextFragment();
+
+                    case 3:
+                        return new PictureTextFragment();
+
+                    case 4:
+                        return new PictureTextFragment();
+
+                    default:
+                        return null;
+                }
+            }
+        });
 
         //
         mDrawer.post(new Runnable() {

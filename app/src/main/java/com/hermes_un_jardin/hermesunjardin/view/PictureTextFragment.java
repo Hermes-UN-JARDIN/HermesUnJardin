@@ -1,7 +1,7 @@
 package com.hermes_un_jardin.hermesunjardin.view;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +24,7 @@ public class PictureTextFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         //
-        View root = inflater.inflate(R.layout.picture_text_fragment, container);
+        View root = inflater.inflate(R.layout.picture_text_fragment, container, false);
         mPicture = (ImageView) root.findViewById(R.id.picture);
         mText = (TextView) root.findViewById(R.id.text);
 
