@@ -49,7 +49,7 @@ public class MainActivity extends FragmentActivity {
         mMainBoard.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public int getCount() {
-                return 5;
+                return HermesUnJardin.IDEA_DETAIL_COUNT;
             }
 
             @Override
