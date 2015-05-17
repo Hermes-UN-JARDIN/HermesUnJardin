@@ -8,8 +8,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
+import com.hermes_un_jardin.hermesunjardin.IdeaHandler.Idea;
 import com.hermes_un_jardin.hermesunjardin.view.NavDrawer;
 import com.hermes_un_jardin.hermesunjardin.view.PictureTextFragment;
 
@@ -20,11 +22,16 @@ public class MainActivity extends FragmentActivity {
     private NavDrawer mDrawer;
     private boolean mIsDrawerOpen = false;
     private ViewPager mMainBoard;
+    private Fragment mCurrentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Idea idea = new Idea();
+        idea.read(0);
+        idea.write(1);
 
         init();
     }
@@ -56,23 +63,31 @@ public class MainActivity extends FragmentActivity {
             public Fragment getItem(int position) {
                 switch (position) {
                     case 0:
-                        return new PictureTextFragment();
+                        mCurrentFragment = new PictureTextFragment();
+                        break;
 
                     case 1:
-                        return new PictureTextFragment();
+                        mCurrentFragment = new PictureTextFragment();
+                        break;
 
                     case 2:
-                        return new PictureTextFragment();
+                        mCurrentFragment = new PictureTextFragment();
+                        break;
 
                     case 3:
-                        return new PictureTextFragment();
+                        mCurrentFragment = new PictureTextFragment();
+                        break;
 
                     case 4:
-                        return new PictureTextFragment();
+                        mCurrentFragment = new PictureTextFragment();
+                        break;
 
                     default:
-                        return null;
+                        mCurrentFragment = null;
+                        break;
                 }
+
+                return mCurrentFragment;
             }
         });
 
@@ -119,5 +134,9 @@ public class MainActivity extends FragmentActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onClickSelectPic(View v) {
+        ((PictureTextFragment) mCurrentFragment).onClickSelectPic(v);
     }
 }
