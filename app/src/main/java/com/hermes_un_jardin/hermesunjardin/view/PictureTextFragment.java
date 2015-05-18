@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hermes_un_jardin.hermesunjardin.MainActivity;
 import com.hermes_un_jardin.hermesunjardin.R;
 
 /**
@@ -32,5 +33,22 @@ public class PictureTextFragment extends Fragment {
         mText.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         return root;
+    }
+
+    public void setState(MainActivity.State state) {
+        switch (state) {
+            case Default:
+                break;
+
+            case View:
+
+                break;
+
+            case Edit:
+                break;
+
+            default:
+                break;
+        }
     }
 }

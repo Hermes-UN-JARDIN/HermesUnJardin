@@ -20,6 +20,8 @@ public class MainActivity extends FragmentActivity {
     private NavDrawer mDrawer;
     private boolean mIsDrawerOpen = false;
     private ViewPager mMainBoard;
+    private Fragment mCurrentFragment;
+    private State mState = State.Default;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,23 +58,31 @@ public class MainActivity extends FragmentActivity {
             public Fragment getItem(int position) {
                 switch (position) {
                     case 0:
-                        return new PictureTextFragment();
+                        mCurrentFragment = new PictureTextFragment();
+                        break;
 
                     case 1:
-                        return new PictureTextFragment();
+                        mCurrentFragment = new PictureTextFragment();
+                        break;
 
                     case 2:
-                        return new PictureTextFragment();
+                        mCurrentFragment = new PictureTextFragment();
+                        break;
 
                     case 3:
-                        return new PictureTextFragment();
+                        mCurrentFragment = new PictureTextFragment();
+                        break;
 
                     case 4:
-                        return new PictureTextFragment();
+                        mCurrentFragment = new PictureTextFragment();
+                        break;
 
                     default:
-                        return null;
+                        mCurrentFragment = null;
+                        break;
                 }
+
+                return mCurrentFragment;
             }
         });
 
@@ -84,7 +94,6 @@ public class MainActivity extends FragmentActivity {
             }
         });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -119,5 +128,16 @@ public class MainActivity extends FragmentActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void changeState(State state) {
+        ((PictureTextFragment) mCurrentFragment).setState(state);
+        mState = state;
+    }
+
+    public static enum State {
+        Default,
+        View,
+        Edit,
     }
 }
