@@ -1,31 +1,36 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
+    <!--for View-->
     <item
-        android:id="@+id/edit"
+        android:id="@+id/menu_share"
         android:orderInCategory="100"
-        android:title="edit" />
+        android:title="menu_share"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_edit"
+        android:orderInCategory="100"
+        android:title="menu_edit"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_drop"
+        android:orderInCategory="100"
+        android:title="menu_drop"
+        app:showAsAction="ifRoom" />
+
+    <!--for Edit-->
+    <item
+        android:id="@+id/menu_save"
+        android:orderInCategory="100"
+        android:title="menu_save"
+        app:showAsAction="always" />
 
     <item
-        android:id="@+id/drop"
+        android:id="@+id/menu_cancel"
         android:orderInCategory="100"
-        android:title="drop" />
-
-    <item
-        android:id="@+id/save"
-        android:orderInCategory="100"
-        android:title="save" />
-
-    <item
-        android:id="@+id/cancel"
-        android:orderInCategory="100"
-        android:title="cancel" />
-
-    <item
-        android:id="@+id/share"
-        android:orderInCategory="100"
-        android:title="share" />
-
+        android:title="menu_cancel"
+        app:showAsAction="ifRoom" />
 
 </menu>
