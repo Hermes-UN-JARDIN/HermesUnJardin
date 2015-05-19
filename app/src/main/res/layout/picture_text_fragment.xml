@@ -3,22 +3,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/picture"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="120dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:scaleType="centerInside"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_marginTop="16dp">
 
-    <TextView
+        <ImageView
+            android:id="@+id/picture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@mipmap/ic_launcher" />
+
+        <GridLayout
+            android:id="@+id/select_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:columnCount="2"
+            android:orientation="horizontal"
+            android:rowCount="2">
+
+            <ImageButton
+                android:id="@+id/camera"
+                android:layout_width="80dp"
+                android:layout_height="75dp"
+                android:onClick="onClickSelectPic"
+                android:scaleType="centerInside"
+                android:src="@mipmap/ic_launcher" />
+
+            <ImageButton
+                android:id="@+id/photo"
+                android:layout_width="80dp"
+                android:layout_height="75dp"
+                android:onClick="onClickSelectPic"
+                android:scaleType="centerInside"
+                android:src="@mipmap/ic_launcher" />
+
+            <ImageButton
+                android:id="@+id/hand_make"
+                android:layout_width="80dp"
+                android:layout_height="75dp"
+                android:onClick="onClickSelectPic"
+                android:scaleType="centerInside"
+                android:src="@mipmap/ic_launcher" />
+
+            <ImageButton
+                android:id="@+id/no"
+                android:layout_width="80dp"
+                android:layout_height="75dp"
+                android:onClick="onClickSelectPic"
+                android:scaleType="centerInside"
+                android:src="@mipmap/ic_launcher" />
+
+        </GridLayout>
+
+    </RelativeLayout>
+
+
+    <EditText
         android:id="@+id/text"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         android:layout_alignParentBottom="true"
+        android:enabled="true"
         android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbars="vertical"
         android:text="text" />

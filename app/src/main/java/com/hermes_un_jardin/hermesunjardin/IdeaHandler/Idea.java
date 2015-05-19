@@ -8,11 +8,19 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 /**
  * Created by songdeming on 2015/5/14.
@@ -31,6 +39,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 public class Idea {
 
     public static final String TAG = "Idea";
+
+    private static final String XML_FILENAME = "idea.xml";
 
     // Attribute key
     private static final String XML_IDEA_ROOT = "Idea";
@@ -51,9 +61,11 @@ public class Idea {
             return;
         }
 
+        final String ideaDir = new File(HermesUnJardin.getApplication().getFilesDir(), String.valueOf(id)).getAbsolutePath();
+
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document document = documentBuilder.parse(new File(HermesUnJardin.getApplication().getFilesDir(), String.valueOf(id)));
+            Document document = documentBuilder.parse(new File(ideaDir, XML_FILENAME));
 
             // reset old data.
             reset();
@@ -69,6 +81,10 @@ public class Idea {
             NodeList detailList = idea.getChildNodes();
             for (int detailsIt = 0; detailsIt < detailList.getLength(); detailsIt++) {
                 Node detail = detailList.item(detailsIt);
+                if (!XML_DETAIL_ROOT.equalsIgnoreCase(detail.getNodeName())) {
+                    continue;
+                }
+
                 String detailPic = detail.getAttributes().getNamedItem(XML_DETAIL_DESC).getNodeValue();
                 String detailDesc = detail.getAttributes().getNamedItem(XML_DETAIL_PIC).getNodeValue();
 
@@ -83,10 +99,17 @@ public class Idea {
         }
     }
 
+    /**
+     * @param id the sub-directory of data. Range from [0, `HermesUnJardin.IDEA_DETAIL_COUNT`).
+     *           Howere, you MUST make sure the writing path exist, otherwise, the write operation
+     *           will fail.
+     */
     public void write(int id) {
         if (!checkIdValid(id)) {
             return;
         }
+
+        final String ideaDir = new File(HermesUnJardin.getApplication().getFilesDir(), String.valueOf(id)).getAbsolutePath();
 
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -108,11 +131,15 @@ public class Idea {
 
             document.appendChild(ideaElement);
 
-            //
-            document.toString();
+            // To file.
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
 
-            //
-
+            Source source = new DOMSource(document);
+            Result result = new StreamResult(new FileWriter(new File(ideaDir, XML_FILENAME)));
+            transformer.transform(source, result);
         } catch (Exception e) {
             e.printStackTrace();
         }

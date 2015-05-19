@@ -2,7 +2,6 @@ package com.hermes_un_jardin.hermesunjardin.view;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,8 @@ import com.hermes_un_jardin.hermesunjardin.R;
  * Created by songdeming on 2015/5/13.
  */
 public class PictureTextFragment extends Fragment {
+
+    public static final String TAG = "PictureTextFragment";
 
     private ImageView mPicture;
     private TextView mText;
@@ -45,6 +46,16 @@ public class PictureTextFragment extends Fragment {
                 break;
 
             case Edit:
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    public void onClickSelectPic(View v) {
+        switch (v.getId()) {
+            case R.id.camera:
                 break;
 
             default:
