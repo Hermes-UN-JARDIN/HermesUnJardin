@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import com.hermes_un_jardin.hermesunjardin.IdeaHandler.Idea;
 import com.hermes_un_jardin.hermesunjardin.view.NavDrawer;
 import com.hermes_un_jardin.hermesunjardin.view.PictureTextFragment;
 
@@ -188,13 +187,13 @@ public class MainActivity extends FragmentActivity {
         mState = state;
     }
 
+    public void onClickSelectPic(View v) {
+        ((PictureTextFragment) mCurrentFragment).onClickSelectPic(v);
+    }
+
     public static enum State {
         Default,
         View,
         Edit,
-    }
-
-    public void onClickSelectPic(View v) {
-        ((PictureTextFragment) mCurrentFragment).onClickSelectPic(v);
     }
 }

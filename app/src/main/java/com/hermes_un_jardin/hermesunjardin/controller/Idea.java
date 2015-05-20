@@ -1,4 +1,4 @@
-package com.hermes_un_jardin.hermesunjardin.IdeaHandler;
+package com.hermes_un_jardin.hermesunjardin.controller;
 
 import com.hermes_un_jardin.hermesunjardin.HermesUnJardin;
 
@@ -45,37 +45,43 @@ public class Idea {
     // Attribute key
     private static final String XML_IDEA_ROOT = "Idea";
     private static final String XML_IDEA_NAME = "name";
+    private static final String XML_IDEA_ICON = "icon";
     private static final String XML_IDEA_DESC = "desc";
     private static final String XML_DETAIL_ROOT = "Detail";
     private static final String XML_DETAIL_PIC = "pic";
     private static final String XML_DETAIL_DESC = "desc";
+    // Extra fields
+    private static final String DATA_DIR = HermesUnJardin.getApplication().getFilesDir().getAbsolutePath();
+    // Xml fields
     private String mName;
     private String mDesc;
     private List<Detail> mDetailList = new ArrayList<Detail>();
+    private String mIcon;
 
-    /**
-     * @param id the sub-directory of data. Range from [0, `HermesUnJardin.IDEA_DETAIL_COUNT`).
-     */
-    public void read(int id) {
-        if (!checkIdValid(id)) {
-            return;
-        }
+    public Idea(String name) {
+        mName = name;
+    }
 
-        final String ideaDir = new File(HermesUnJardin.getApplication().getFilesDir(), String.valueOf(id)).getAbsolutePath();
+    public static Idea readFrom(String name) {
+        Idea idea = new Idea(name);
+        idea.read();
 
+        return idea;
+    }
+
+    public void read() {
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document document = documentBuilder.parse(new File(ideaDir, XML_FILENAME));
+            Document document = documentBuilder.parse(new File(getIdeaDir(), XML_FILENAME));
 
             // reset old data.
             reset();
 
             // Idea
             Element idea = document.getDocumentElement();
-            String ideaName = idea.getAttribute(XML_IDEA_NAME);
-            String ideaDesc = idea.getAttribute(XML_IDEA_DESC);
-            mName = ideaName;
-            mDesc = ideaDesc;
+            mName = idea.getAttribute(XML_IDEA_NAME);
+            mIcon = idea.getAttribute(XML_IDEA_ICON);
+            mDesc = idea.getAttribute(XML_IDEA_DESC);
 
             // Detail
             NodeList detailList = idea.getChildNodes();
@@ -99,18 +105,7 @@ public class Idea {
         }
     }
 
-    /**
-     * @param id the sub-directory of data. Range from [0, `HermesUnJardin.IDEA_DETAIL_COUNT`).
-     *           Howere, you MUST make sure the writing path exist, otherwise, the write operation
-     *           will fail.
-     */
-    public void write(int id) {
-        if (!checkIdValid(id)) {
-            return;
-        }
-
-        final String ideaDir = new File(HermesUnJardin.getApplication().getFilesDir(), String.valueOf(id)).getAbsolutePath();
-
+    public void write() {
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document document = documentBuilder.newDocument();
@@ -138,7 +133,7 @@ public class Idea {
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
 
             Source source = new DOMSource(document);
-            Result result = new StreamResult(new FileWriter(new File(ideaDir, XML_FILENAME)));
+            Result result = new StreamResult(new FileWriter(new File(getIdeaDir(), XML_FILENAME)));
             transformer.transform(source, result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -147,12 +142,21 @@ public class Idea {
 
     public void reset() {
         mName = "";
+        mIcon = "";
         mDesc = "";
         mDetailList.clear();
     }
 
-    private boolean checkIdValid(int id) {
-        return 0 <= id && id < HermesUnJardin.IDEA_DETAIL_COUNT;
+    public String getIcon() {
+        return mIcon;
+    }
+
+    public void setIcon(String mIcoPath) {
+        this.mIcon = mIcoPath;
+    }
+
+    public String getIconPath() {
+        return new File(getIdeaDir(), getIcon()).getAbsolutePath();
     }
 
     public String getName() {
@@ -189,6 +193,10 @@ public class Idea {
         return false;
     }
 
+    public String getIdeaDir() {
+        return new File(DATA_DIR, mName).getAbsolutePath();
+    }
+
     public static class Detail {
         private String mPicPath;
         private String mDesc;
@@ -209,6 +217,4 @@ public class Idea {
             this.mDesc = mDesc;
         }
     }
-
-
 }

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Idea name="HermesUnJardin" desc="My Idea Is Manage You Idea.">
-    <!--
-        Picture store in data file directory of external storage,
-        such as '/storage/sdcard/Android/data/data/com.hermes_un_jardin.hermesunjardin/files/0/a.png'.
-    -->
-    <detail desc="you view your idea here. picture: 'a.png'" pic="a.png" />
-</Idea>
