@@ -1,5 +1,6 @@
 package com.hermes_un_jardin.hermesunjardin.view;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
@@ -19,7 +20,7 @@ public class PictureTextFragment extends Fragment {
 
     public static final String TAG = "PictureTextFragment";
 
-    private ImageView mPicture;
+    private ImageView mImage;
     private TextView mText;
 
     @Override
@@ -28,13 +29,21 @@ public class PictureTextFragment extends Fragment {
 
         //
         View root = inflater.inflate(R.layout.picture_text_fragment, container, false);
-        mPicture = (ImageView) root.findViewById(R.id.picture);
+        mImage = (ImageView) root.findViewById(R.id.picture);
         mText = (TextView) root.findViewById(R.id.text);
 
         //
         mText.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         return root;
+    }
+
+    public void setImage(Bitmap bitmap) {
+        mImage.setImageBitmap(bitmap);
+    }
+
+    public void setDesc(String desc) {
+        mText.setText(desc);
     }
 
     public void setState(MainActivity.State state) {

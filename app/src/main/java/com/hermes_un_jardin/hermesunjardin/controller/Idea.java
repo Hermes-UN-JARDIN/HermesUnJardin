@@ -91,11 +91,11 @@ public class Idea {
                     continue;
                 }
 
-                String detailPic = detail.getAttributes().getNamedItem(XML_DETAIL_DESC).getNodeValue();
-                String detailDesc = detail.getAttributes().getNamedItem(XML_DETAIL_PIC).getNodeValue();
+                String detailPic = detail.getAttributes().getNamedItem(XML_DETAIL_PIC).getNodeValue();
+                String detailDesc = detail.getAttributes().getNamedItem(XML_DETAIL_DESC).getNodeValue();
 
-                Detail d = new Detail();
-                d.mPicPath = detailPic;
+                Detail d = new Detail(this);
+                d.mPic = detailPic;
                 d.mDesc = detailDesc;
 
                 mDetailList.add(d);
@@ -118,7 +118,7 @@ public class Idea {
             // Details
             for (Detail detail : mDetailList) {
                 Element detailElement = document.createElement(XML_DETAIL_ROOT);
-                detailElement.setAttribute(XML_DETAIL_PIC, detail.mPicPath);
+                detailElement.setAttribute(XML_DETAIL_PIC, detail.mPic);
                 detailElement.setAttribute(XML_DETAIL_DESC, detail.mDesc);
 
                 ideaElement.appendChild(detailElement);
@@ -193,20 +193,33 @@ public class Idea {
         return false;
     }
 
+    public List<Detail> getDetailList() {
+        return mDetailList;
+    }
+
+    public void setDetailList(List<Detail> mDetailList) {
+        this.mDetailList = mDetailList;
+    }
+
     public String getIdeaDir() {
         return new File(DATA_DIR, mName).getAbsolutePath();
     }
 
     public static class Detail {
-        private String mPicPath;
+        private Idea mIdea;
+        private String mPic;
         private String mDesc;
 
+        public Detail(Idea idea) {
+            mIdea = idea;
+        }
+
         public String getPicPath() {
-            return mPicPath;
+            return new File(mIdea.getIdeaDir(), mPic).getAbsolutePath();
         }
 
         public void setPicPath(String mPicPath) {
-            this.mPicPath = mPicPath;
+            this.mPic = mPicPath;
         }
 
         public String getDesc() {

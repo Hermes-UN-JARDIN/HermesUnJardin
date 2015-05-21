@@ -13,9 +13,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hermes_un_jardin.hermesunjardin.HermesUnJardin;
+import com.hermes_un_jardin.hermesunjardin.MainActivity;
 import com.hermes_un_jardin.hermesunjardin.R;
 import com.hermes_un_jardin.hermesunjardin.controller.Idea;
 import com.hermes_un_jardin.hermesunjardin.utils.Graphics;
@@ -90,7 +90,8 @@ public class NavDrawer extends FrameLayout {
             itemRoot.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(HermesUnJardin.getApplication(), String.format("Idea(%s) has been clicked", idea.getName()), Toast.LENGTH_SHORT).show();
+                    MainActivity mainActivity = (MainActivity) mContext;
+                    mainActivity.setIdea(idea);
                 }
             });
 

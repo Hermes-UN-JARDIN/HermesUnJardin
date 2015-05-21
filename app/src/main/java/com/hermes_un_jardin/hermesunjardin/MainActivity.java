@@ -1,6 +1,7 @@
 package com.hermes_un_jardin.hermesunjardin;
 
 import android.app.ActionBar;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -11,8 +12,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
+import com.hermes_un_jardin.hermesunjardin.controller.Idea;
 import com.hermes_un_jardin.hermesunjardin.view.NavDrawer;
 import com.hermes_un_jardin.hermesunjardin.view.PictureTextFragment;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends FragmentActivity {
@@ -21,7 +26,9 @@ public class MainActivity extends FragmentActivity {
     private NavDrawer mDrawer;
     private boolean mIsDrawerOpen = false;
     private ViewPager mMainBoard;
+    private Map<Integer, Fragment> mIdFragment = new HashMap<Integer, Fragment>();
     private Fragment mCurrentFragment;
+    private Idea mIdea;
     private State mState = State.Default;
     private Menu mMenu;
 
@@ -84,6 +91,7 @@ public class MainActivity extends FragmentActivity {
                         break;
                 }
 
+                mIdFragment.put(position, mCurrentFragment);
                 return mCurrentFragment;
             }
         });
@@ -98,6 +106,25 @@ public class MainActivity extends FragmentActivity {
                 changeState(State.View);
             }
         });
+    }
+
+    /**
+     * Using 'idea' to fill the activity.
+     *
+     * @param idea
+     */
+    public void setIdea(Idea idea) {
+        mIdea = idea;
+
+        for (int i = 0; i < Math.min(mIdea.getDetailList().size(), HermesUnJardin.IDEA_DETAIL_COUNT); i++) {
+            Idea.Detail detail = mIdea.getDetailList().get(i);
+
+            PictureTextFragment pictureTextFragment = (PictureTextFragment) mIdFragment.get(i);
+            pictureTextFragment.setImage(BitmapFactory.decodeFile(detail.getPicPath()));
+            pictureTextFragment.setDesc(detail.getDesc());
+        }
+
+        mMainBoard.setCurrentItem(0);
     }
 
     @Override
