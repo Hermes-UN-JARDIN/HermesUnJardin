@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hermes_un_jardin.hermesunjardin.HermesUnJardin;
 import com.hermes_un_jardin.hermesunjardin.R;
@@ -71,20 +72,27 @@ public class NavDrawer extends FrameLayout {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            Idea idea = mListAdapter.getItem(position);
+            final Idea idea = mListAdapter.getItem(position);
 
             if (convertView == null) {
                 convertView = LayoutInflater.from(HermesUnJardin.getApplication()).inflate(R.layout.drawer_list_item_view, null);
             }
 
             RelativeLayout itemRoot = (RelativeLayout) convertView;
-
             TextView txt = (TextView) itemRoot.findViewById(R.id.text);
             ImageView img = (ImageView) itemRoot.findViewById(R.id.icon);
 
             txt.setText(idea.getName());
             Bitmap bitmap = BitmapFactory.decodeFile(idea.getIconPath());
             img.setImageBitmap(Graphics.createRoundedBitmap(bitmap, (int) (bitmap.getWidth() * 0.35)));
+
+            // `onClick` event
+            itemRoot.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(HermesUnJardin.getApplication(), String.format("Idea(%s) has been clicked", idea.getName()), Toast.LENGTH_SHORT).show();
+                }
+            });
 
             return convertView;
         }
