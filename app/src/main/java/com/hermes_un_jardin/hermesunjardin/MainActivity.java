@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,8 @@ import java.util.Map;
 
 public class MainActivity extends FragmentActivity {
 
+    public static final String TAG = "MainActivity";
+
     private ActionBar mActionBar;
     private NavDrawer mDrawer;
     private boolean mIsDrawerOpen = false;
@@ -31,6 +34,19 @@ public class MainActivity extends FragmentActivity {
     private Idea mIdea;
     private State mState = State.Default;
     private Menu mMenu;
+
+    public State getState() {
+        return mState;
+    }
+
+    public void setState(State state) {
+        this.mState = state;
+
+        for (Fragment fragment : mIdFragment.values()) {
+            ((PictureTextFragment) fragment).setState(state);
+            Log.d(TAG, fragment.toString());
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +141,8 @@ public class MainActivity extends FragmentActivity {
         }
 
         mMainBoard.setCurrentItem(0);
+
+        changeState(State.View);
     }
 
     @Override
@@ -191,6 +209,7 @@ public class MainActivity extends FragmentActivity {
                 break;
 
             case View:
+                // Menu
                 share.setVisible(true);
                 edit.setVisible(true);
                 drop.setVisible(true);
@@ -210,8 +229,7 @@ public class MainActivity extends FragmentActivity {
                 break;
         }
 
-        ((PictureTextFragment) mCurrentFragment).setState(state);
-        mState = state;
+        setState(state);
     }
 
     public void onClickSelectPic(View v) {

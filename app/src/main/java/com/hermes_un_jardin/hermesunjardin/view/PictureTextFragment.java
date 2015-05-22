@@ -7,6 +7,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +24,8 @@ public class PictureTextFragment extends Fragment {
     private ImageView mImage;
     private TextView mText;
 
+    private GridLayout mSelectPic;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -31,6 +34,7 @@ public class PictureTextFragment extends Fragment {
         View root = inflater.inflate(R.layout.picture_text_fragment, container, false);
         mImage = (ImageView) root.findViewById(R.id.picture);
         mText = (TextView) root.findViewById(R.id.text);
+        mSelectPic = (GridLayout) root.findViewById(R.id.select_pic);
 
         //
         mText.setMovementMethod(ScrollingMovementMethod.getInstance());
@@ -52,10 +56,13 @@ public class PictureTextFragment extends Fragment {
                 break;
 
             case View:
-
+                mSelectPic.setVisibility(View.INVISIBLE);
+                mText.setEnabled(false);
                 break;
 
             case Edit:
+                mSelectPic.setVisibility(View.VISIBLE);
+                mText.setEnabled(true);
                 break;
 
             default:
