@@ -31,7 +31,7 @@ public class PictureTextFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         //
-        View root = inflater.inflate(R.layout.picture_text_fragment, container, false);
+        View root = inflater.inflate(R.layout.picture_text_fragment, null, false);
         mImage = (ImageView) root.findViewById(R.id.picture);
         mText = (TextView) root.findViewById(R.id.text);
         mSelectPic = (GridLayout) root.findViewById(R.id.select_pic);

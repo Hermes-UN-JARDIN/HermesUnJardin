@@ -64,6 +64,7 @@ public class MainActivity extends FragmentActivity {
         mActionBar.setHomeButtonEnabled(true);
         mActionBar.setDisplayShowHomeEnabled(true);
 
+        mMainBoard.setOffscreenPageLimit(HermesUnJardin.IDEA_DETAIL_COUNT);
         mMainBoard.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public int getCount() {
