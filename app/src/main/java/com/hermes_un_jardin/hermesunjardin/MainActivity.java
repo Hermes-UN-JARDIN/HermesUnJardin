@@ -39,15 +39,6 @@ public class MainActivity extends FragmentActivity {
         return mState;
     }
 
-    public void setState(State state) {
-        this.mState = state;
-
-        for (Fragment fragment : mIdFragment.values()) {
-            ((PictureTextFragment) fragment).setState(state);
-            Log.d(TAG, fragment.toString());
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +72,8 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public Fragment getItem(int position) {
+                Log.d(TAG, String.format("`getItem(%d)", position));
+
                 switch (position) {
                     case 0:
                         mCurrentFragment = new PictureTextFragment();
@@ -109,6 +102,14 @@ public class MainActivity extends FragmentActivity {
 
                 mIdFragment.put(position, mCurrentFragment);
                 return mCurrentFragment;
+            }
+        });
+        mMainBoard.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+
+                Log.d(TAG, String.format("`onPageSelected` %d", position));
             }
         });
 
@@ -199,6 +200,9 @@ public class MainActivity extends FragmentActivity {
 
     public void changeState(State state) {
 
+        this.mState = state;
+
+        // Change MainActivity state
         MenuItem share = mMenu.findItem(R.id.menu_share);
         MenuItem edit = mMenu.findItem(R.id.menu_edit);
         MenuItem drop = mMenu.findItem(R.id.menu_drop);
@@ -229,14 +233,18 @@ public class MainActivity extends FragmentActivity {
                 break;
         }
 
-        setState(state);
+        // Change Fragment state
+        for (Fragment fragment : mIdFragment.values()) {
+            ((PictureTextFragment) fragment).setState(state);
+            Log.d(TAG, fragment.toString());
+        }
     }
 
     public void onClickSelectPic(View v) {
         ((PictureTextFragment) mCurrentFragment).onClickSelectPic(v);
     }
 
-    public static enum State {
+    public enum State {
         Default,
         View,
         Edit,
