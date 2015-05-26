@@ -75,7 +75,7 @@ public class NavDrawer extends FrameLayout {
             final Idea idea = mListAdapter.getItem(position);
 
             if (convertView == null) {
-                convertView = LayoutInflater.from(HermesUnJardin.getApplication()).inflate(R.layout.drawer_list_item_view, null);
+                convertView = LayoutInflater.from(HermesUnJardin.getApplication()).inflate(R.layout.drawer_list_item_view, parent, false);
             }
 
             RelativeLayout itemRoot = (RelativeLayout) convertView;
