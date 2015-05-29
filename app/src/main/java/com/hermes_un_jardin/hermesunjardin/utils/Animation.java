@@ -3,7 +3,7 @@ package com.hermes_un_jardin.hermesunjardin.utils;
 import android.animation.ValueAnimator;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
 
 import java.lang.reflect.Method;
@@ -45,7 +45,7 @@ public class Animation {
         ValueAnimator valueAnimator = new ValueAnimator().ofFloat(0f, 1f);
         valueAnimator.setStartDelay(startDelay);
         valueAnimator.setDuration(duration);
-        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+        valueAnimator.setInterpolator(new AccelerateInterpolator());
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
             @Override
@@ -104,7 +104,7 @@ public class Animation {
         ValueAnimator valueAnimator = new ValueAnimator().ofFloat(0f, 1f);
         valueAnimator.setStartDelay(startDelay);
         valueAnimator.setDuration(duration);
-        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+        valueAnimator.setInterpolator(new AccelerateInterpolator());
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
             @Override
