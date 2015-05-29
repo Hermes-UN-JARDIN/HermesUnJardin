@@ -91,7 +91,7 @@ public class NavDrawer extends FrameLayout {
                 @Override
                 public void onClick(View v) {
                     MainActivity mainActivity = (MainActivity) mContext;
-                    mainActivity.setIdea(idea);
+                    mainActivity.onChangeIdea(idea);
                 }
             });
 

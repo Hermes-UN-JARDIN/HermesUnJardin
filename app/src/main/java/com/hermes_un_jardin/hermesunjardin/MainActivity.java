@@ -2,6 +2,7 @@ package com.hermes_un_jardin.hermesunjardin;
 
 import android.app.ActionBar;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -14,9 +15,11 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.hermes_un_jardin.hermesunjardin.controller.Idea;
+import com.hermes_un_jardin.hermesunjardin.utils.Animation;
 import com.hermes_un_jardin.hermesunjardin.view.NavDrawer;
 import com.hermes_un_jardin.hermesunjardin.view.PictureTextFragment;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,6 +48,18 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         init();
+    }
+
+    public void onChangeIdea(Idea idea) {
+        setIdea(idea);
+
+        Method setTitleMethod = null;
+        try {
+            setTitleMethod = mActionBar.getClass().getDeclaredMethod("setTitle", CharSequence.class);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        Animation.foo(mActionBar, setTitleMethod, idea.getName(), Color.WHITE, 0, 1000);
     }
 
     public void init() {
