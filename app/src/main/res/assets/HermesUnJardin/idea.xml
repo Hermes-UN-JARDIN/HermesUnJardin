@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Idea name="HermesUnJardin" desc="My Idea Is Manage Your Idea." icon="icon.png">
+    <!--
+        Picture store in data file directory of external storage,
+        such as '/storage/sdcard/Android/data/data/com.hermes_un_jardin.hermesunjardin/files/0/a.png'.
+    -->
+    <detail desc="爱马仕花园系列" pic="a.png" />
+    <detail desc="地中海" pic="b.png" />
+    <detail desc="尼罗河" pic="c.png" />
+    <detail desc="印度" pic="d.png" />
+    <detail desc="空中" pic="e.png" />
+</Idea>
