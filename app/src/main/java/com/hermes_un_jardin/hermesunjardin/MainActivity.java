@@ -50,18 +50,6 @@ public class MainActivity extends FragmentActivity {
         init();
     }
 
-    public void onChangeIdea(Idea idea) {
-        setIdea(idea);
-
-        Method setTitleMethod = null;
-        try {
-            setTitleMethod = mActionBar.getClass().getDeclaredMethod("setTitle", CharSequence.class);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        Animation.foo(mActionBar, setTitleMethod, idea.getName(), Color.WHITE, 0, 1000);
-    }
-
     public void init() {
         initData();
         initView();
@@ -149,17 +137,28 @@ public class MainActivity extends FragmentActivity {
     public void setIdea(Idea idea) {
         mIdea = idea;
 
-        for (int i = 0; i < Math.min(mIdea.getDetailList().size(), HermesUnJardin.IDEA_DETAIL_COUNT); i++) {
-            Idea.Detail detail = mIdea.getDetailList().get(i);
+        // Change fragment
+        for (int id : mIdFragment.keySet()) {
+            PictureTextFragment fragment = (PictureTextFragment) mIdFragment.get(id);
+            Idea.Detail detail = mIdea.getDetail(id);
 
-            PictureTextFragment pictureTextFragment = (PictureTextFragment) mIdFragment.get(i);
-            pictureTextFragment.setImage(BitmapFactory.decodeFile(detail.getPicPath()));
-            pictureTextFragment.setDesc(detail.getDesc());
+            if (detail != null) {
+                fragment.setImage(BitmapFactory.decodeFile(detail.getPicPath()));
+                fragment.setDesc(detail.getDesc());
+            } else {
+                fragment.setImage(null);
+                fragment.setDesc(null);
+            }
         }
 
-        mMainBoard.setCurrentItem(0);
-
-        changeState(State.View);
+        // Change title
+        Method setTitleMethod = null;
+        try {
+            setTitleMethod = mActionBar.getClass().getDeclaredMethod("setTitle", CharSequence.class);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        Animation.foo(mActionBar, setTitleMethod, idea.getName(), Color.WHITE, 0, 1000);
     }
 
     @Override

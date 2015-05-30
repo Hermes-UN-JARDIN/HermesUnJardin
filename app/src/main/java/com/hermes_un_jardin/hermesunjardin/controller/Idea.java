@@ -201,6 +201,14 @@ public class Idea {
         this.mDetailList = mDetailList;
     }
 
+    public Detail getDetail(int id) {
+        if (id < mDetailList.size()) {
+            return mDetailList.get(id);
+        }
+
+        return null;
+    }
+
     public String getIdeaDir() {
         return new File(DATA_DIR, mName).getAbsolutePath();
     }
