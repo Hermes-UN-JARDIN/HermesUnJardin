@@ -1,4 +1,4 @@
-package com.hermes_un_jardin.hermesunjardin;
+package com.hermes_un_jardin.hermesunjardin.view;
 
 import android.app.ActionBar;
 import android.graphics.BitmapFactory;
@@ -14,33 +14,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import com.hermes_un_jardin.hermesunjardin.controller.Idea;
+import com.hermes_un_jardin.hermesunjardin.HermesUnJardin;
+import com.hermes_un_jardin.hermesunjardin.R;
+import com.hermes_un_jardin.hermesunjardin.model.Idea;
+import com.hermes_un_jardin.hermesunjardin.presenter.MainPresenter;
+import com.hermes_un_jardin.hermesunjardin.presenter.MainPresenterImpl;
 import com.hermes_un_jardin.hermesunjardin.utils.Animation;
-import com.hermes_un_jardin.hermesunjardin.view.NavDrawer;
-import com.hermes_un_jardin.hermesunjardin.view.PictureTextFragment;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements MainActivityView {
 
     public static final String TAG = "MainActivity";
-
+    MainPresenter mPresenter;
     private ActionBar mActionBar;
-    private NavDrawer mDrawer;
-    private boolean mIsDrawerOpen = false;
     private ViewPager mMainBoard;
     private Map<Integer, Fragment> mIdFragment = new HashMap<Integer, Fragment>();
-    private Fragment mCurrentFragment;
-    private Idea mIdea;
-    private State mState = State.Default;
     private Menu mMenu;
-
-    public State getState() {
-        return mState;
-    }
+    private boolean mIsDrawerOpen = false;
+    // Drawer
+    private NavDrawer mDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,15 +44,13 @@ public class MainActivity extends FragmentActivity {
 
         init();
     }
-
     public void init() {
         initData();
         initView();
     }
-
     private void initData() {
+        mPresenter = new MainPresenterImpl(this, null);
     }
-
     private void initView() {
         mActionBar = getActionBar();
         mDrawer = (NavDrawer) findViewById(R.id.nav_drawer);
@@ -78,34 +71,11 @@ public class MainActivity extends FragmentActivity {
             public Fragment getItem(int position) {
                 Log.d(TAG, String.format("`getItem(%d)", position));
 
-                switch (position) {
-                    case 0:
-                        mCurrentFragment = new PictureTextFragment();
-                        break;
+                PictureTextFragment fragment = new PictureTextFragment();
+                fragment.init(MainActivity.this);
+                mIdFragment.put(position, fragment);
 
-                    case 1:
-                        mCurrentFragment = new PictureTextFragment();
-                        break;
-
-                    case 2:
-                        mCurrentFragment = new PictureTextFragment();
-                        break;
-
-                    case 3:
-                        mCurrentFragment = new PictureTextFragment();
-                        break;
-
-                    case 4:
-                        mCurrentFragment = new PictureTextFragment();
-                        break;
-
-                    default:
-                        mCurrentFragment = null;
-                        break;
-                }
-
-                mIdFragment.put(position, mCurrentFragment);
-                return mCurrentFragment;
+                return fragment;
             }
         });
         mMainBoard.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -120,45 +90,10 @@ public class MainActivity extends FragmentActivity {
         new View(this).post(new Runnable() {
             @Override
             public void run() {
-                // Close Drawer
-                mDrawer.setX(-mDrawer.getWidth());
-
-                // Init 'Setting Button' in Action Bar.
-                changeState(State.View);
+                setViewLayout();
+                showDrawer(false);
             }
         });
-    }
-
-    /**
-     * Using 'idea' to fill the activity.
-     *
-     * @param idea
-     */
-    public void setIdea(Idea idea) {
-        mIdea = idea;
-
-        // Change fragment
-        for (int id : mIdFragment.keySet()) {
-            PictureTextFragment fragment = (PictureTextFragment) mIdFragment.get(id);
-            Idea.Detail detail = mIdea.getDetail(id);
-
-            if (detail != null) {
-                fragment.setImage(BitmapFactory.decodeFile(detail.getPicPath()));
-                fragment.setDesc(detail.getDesc());
-            } else {
-                fragment.setImage(null);
-                fragment.setDesc(null);
-            }
-        }
-
-        // Change title
-        Method setTitleMethod = null;
-        try {
-            setTitleMethod = mActionBar.getClass().getDeclaredMethod("setTitle", CharSequence.class);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        Animation.foo(mActionBar, setTitleMethod, idea.getName(), Color.WHITE, 0, 1000);
     }
 
     @Override
@@ -178,21 +113,13 @@ public class MainActivity extends FragmentActivity {
 
         switch (id) {
             case android.R.id.home:
-                float x = 0;
-                if (mIsDrawerOpen) {
-                    // To close
-                    x = -mDrawer.getWidth();
-                } else {
-                    // To open
-                    x = 0;
-                }
-                mDrawer.animate().x(x).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).start();
+                mPresenter.onNavigation(mIsDrawerOpen);
                 mIsDrawerOpen = !mIsDrawerOpen;
                 break;
 
             // State: View
             case R.id.menu_edit:
-                changeState(State.Edit);
+                mPresenter.onMenuEdit();
                 break;
             case R.id.menu_drop:
                 break;
@@ -201,7 +128,7 @@ public class MainActivity extends FragmentActivity {
 
             // State: Edit
             case R.id.menu_save:
-                changeState(State.View);
+                mPresenter.onMenuSave();
                 break;
             case R.id.menu_cancel:
                 break;
@@ -213,10 +140,53 @@ public class MainActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void changeState(State state) {
+    @Override
+    public void showDrawer(boolean show) {
+        float x = 0;
+        if (show) {
+            // To open
+            x = 0;
+        } else {
+            // To close
+            x = -mDrawer.getWidth();
+        }
+        mDrawer.animate().x(x).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).start();
+    }
 
-        this.mState = state;
+    //
+    @Override
+    public void selectIdea(Idea idea) {
+        // Change title
+        Animation.firework(mActionBar, idea.getName(), Color.WHITE, 0, 1000);
 
+        // Fill idea data
+        // Change fragment
+        for (int id : mIdFragment.keySet()) {
+            PictureTextFragment fragment = (PictureTextFragment) mIdFragment.get(id);
+            Idea.Detail detail = idea.getDetail(id);
+
+            if (detail != null) {
+                fragment.setImage(BitmapFactory.decodeFile(detail.getPicPath()));
+                fragment.setDesc(detail.getDesc());
+            } else {
+                fragment.setImage(null);
+                fragment.setDesc(null);
+            }
+        }
+    }
+
+    // Change state
+    @Override
+    public void setViewLayout() {
+        changeState(State.View);
+    }
+
+    @Override
+    public void setEditLayout() {
+        changeState(State.Edit);
+    }
+
+    private void changeState(State state) {
         // Change MainActivity state
         MenuItem share = mMenu.findItem(R.id.menu_share);
         MenuItem edit = mMenu.findItem(R.id.menu_edit);
@@ -255,10 +225,22 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    public void onClickSelectPic(View v) {
-        ((PictureTextFragment) mCurrentFragment).onClickSelectPic(v);
+    //
+    public void onEditPic(Fragment fragment) {
+        int detailId = getDetailId(fragment);
+        mPresenter.onEditPicFromCamera(detailId);
     }
 
+    private int getDetailId(Fragment fragment) {
+        for (Integer id : mIdFragment.keySet()) {
+            Fragment f = mIdFragment.get(id);
+            if (f == fragment) {
+                return id;
+            }
+        }
+
+        return -1;
+    }
     public enum State {
         Default,
         View,

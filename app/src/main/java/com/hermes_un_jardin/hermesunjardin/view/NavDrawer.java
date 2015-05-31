@@ -15,9 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hermes_un_jardin.hermesunjardin.HermesUnJardin;
-import com.hermes_un_jardin.hermesunjardin.MainActivity;
 import com.hermes_un_jardin.hermesunjardin.R;
-import com.hermes_un_jardin.hermesunjardin.controller.Idea;
+import com.hermes_un_jardin.hermesunjardin.model.Idea;
 import com.hermes_un_jardin.hermesunjardin.utils.Graphics;
 
 /**
@@ -27,7 +26,7 @@ public class NavDrawer extends FrameLayout {
 
     public static final String TAG = "NavDrawer";
 
-    private Context mContext;
+    private MainActivity mMainActivity;     // Owner activity
     private ListView mList;
     private DrawerListAdapter mListAdapter;
 
@@ -38,7 +37,7 @@ public class NavDrawer extends FrameLayout {
     public NavDrawer(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        mContext = context;
+        mMainActivity = (MainActivity) context;
 
         init();
     }
@@ -49,14 +48,14 @@ public class NavDrawer extends FrameLayout {
     }
 
     private void initData() {
-        mListAdapter = new DrawerListAdapter(mContext);
+        mListAdapter = new DrawerListAdapter(mMainActivity);
         for (String name : HermesUnJardin.getApplication().getFilesDir().list()) {
             mListAdapter.add(Idea.readFrom(name));
         }
     }
 
     private void initView() {
-        View root = LayoutInflater.from(mContext).inflate(R.layout.nav_drawer, this);
+        View root = LayoutInflater.from(mMainActivity).inflate(R.layout.nav_drawer, this);
         mList = (ListView) root.findViewById(R.id.list);
 
         //
@@ -90,8 +89,7 @@ public class NavDrawer extends FrameLayout {
             itemRoot.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MainActivity mainActivity = (MainActivity) mContext;
-                    mainActivity.setIdea(idea);
+                    mMainActivity.selectIdea(idea);
                 }
             });
 

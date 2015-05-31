@@ -18,7 +18,7 @@ import java.util.List;
 public class Animation {
 
     /**
-     * @param textView
+     * @param view
      * @param text
      * @param color      alpha bit will be ignored.
      * @param startDelay

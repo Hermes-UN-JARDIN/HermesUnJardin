@@ -11,7 +11,6 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hermes_un_jardin.hermesunjardin.MainActivity;
 import com.hermes_un_jardin.hermesunjardin.R;
 
 /**
@@ -25,6 +24,12 @@ public class PictureTextFragment extends Fragment {
     private TextView mText;
 
     private GridLayout mSelectPic;
+
+    private MainActivity mMainActivity;     // Owner activity
+
+    public void init(MainActivity mainActivity) {
+        mMainActivity = mainActivity;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,6 +78,7 @@ public class PictureTextFragment extends Fragment {
     public void onClickSelectPic(View v) {
         switch (v.getId()) {
             case R.id.camera:
+                mMainActivity.onEditPic(this);
                 break;
 
             default:

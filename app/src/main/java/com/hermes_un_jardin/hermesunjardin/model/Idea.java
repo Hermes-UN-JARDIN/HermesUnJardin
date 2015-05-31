@@ -1,4 +1,4 @@
-package com.hermes_un_jardin.hermesunjardin.controller;
+package com.hermes_un_jardin.hermesunjardin.model;
 
 import com.hermes_un_jardin.hermesunjardin.HermesUnJardin;
 
