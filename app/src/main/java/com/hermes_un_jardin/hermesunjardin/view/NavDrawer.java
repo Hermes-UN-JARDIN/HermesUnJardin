@@ -69,7 +69,7 @@ public class NavDrawer extends FrameLayout {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
 
             final Idea idea = mListAdapter.getItem(position);
 
@@ -89,7 +89,7 @@ public class NavDrawer extends FrameLayout {
             itemRoot.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mMainActivity.selectIdea(idea);
+                    mMainActivity.mPresenter.onDrawerSelect(idea);
                 }
             });
 

@@ -1,5 +1,7 @@
 package com.hermes_un_jardin.hermesunjardin.presenter;
 
+import com.hermes_un_jardin.hermesunjardin.model.Idea;
+
 /**
  * Created by song on 2015/5/31.
  */
@@ -10,7 +12,7 @@ public interface MainPresenter {
      */
     void onNavigation(boolean show);
 
-    void onDrawerSelect(int position);
+    void onDrawerSelect(Idea idea);
 
     void onMenuEdit();
 

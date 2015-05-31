@@ -17,9 +17,7 @@ public class MainPresenterImpl implements MainPresenter {
     }
 
     @Override
-    public void onDrawerSelect(int position) {
-        String ideaName = "";       // TODO
-        Idea idea = Idea.readFrom(ideaName);
+    public void onDrawerSelect(Idea idea) {
         mView.selectIdea(idea);
     }
 
