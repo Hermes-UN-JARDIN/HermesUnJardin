@@ -31,7 +31,7 @@ public class MainActivity extends FragmentActivity implements MainActivityView {
     MainPresenter mPresenter;
     private ActionBar mActionBar;
     private ViewPager mMainBoard;
-    private Map<Integer, Fragment> mIdFragment = new HashMap<Integer, Fragment>();
+    private Map<Integer, Fragment> mIdFragment = new HashMap<>();
     private Menu mMenu;
     private boolean mIsDrawerOpen = false;
     // Drawer
@@ -87,13 +87,13 @@ public class MainActivity extends FragmentActivity implements MainActivityView {
             }
         });
 
-        new View(this).post(new Runnable() {
+        new View(this).postDelayed(new Runnable() {
             @Override
             public void run() {
                 setViewLayout();
                 showDrawer(false);
             }
-        });
+        }, 100);
     }
 
     @Override
@@ -157,8 +157,12 @@ public class MainActivity extends FragmentActivity implements MainActivityView {
     @Override
     public void selectIdea(Idea idea) {
         // Change title
-        Animation.firework(mActionBar, idea.getName(), Color.WHITE, 0, 1000);
-//        Animation.blur(mActionBar, idea.getName(), 15, 0.1, 0, 800);
+        double r = Math.random();
+        if (r <= 0.5) {
+            Animation.firework(mActionBar, idea.getName(), Color.WHITE, 100, 1000);
+        } else {
+            Animation.blur(mActionBar, idea.getName(), 15, 0.1, 100, 800);
+        }
 
         // Fill idea data
         // Change fragment

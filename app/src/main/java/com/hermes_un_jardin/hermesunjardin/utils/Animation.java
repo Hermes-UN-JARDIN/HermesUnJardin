@@ -62,13 +62,6 @@ public class Animation {
         Collections.shuffle(spans);
 
         //
-        try {
-            setMethod.invoke(view, spannableString);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        //
         ValueAnimator valueAnimator = new ValueAnimator().ofFloat(0f, 1f);
         valueAnimator.setStartDelay(startDelay);
         valueAnimator.setDuration(duration);
@@ -147,13 +140,6 @@ public class Animation {
         final BlurSpan span = new BlurSpan();
         final SpannableString spannableString = new SpannableString(text);
         spannableString.setSpan(span, 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        //
-        try {
-            setMethod.invoke(view, spannableString);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         //
         ValueAnimator valueAnimator = new ValueAnimator().ofFloat((float) from, (float) to);

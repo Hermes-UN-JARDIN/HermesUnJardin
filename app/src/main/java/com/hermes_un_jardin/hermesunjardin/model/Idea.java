@@ -70,7 +70,7 @@ public class Idea {
     public void read(String name) {
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document document = documentBuilder.parse(new File(getIdeaDir(), XML_FILENAME));
+            Document document = documentBuilder.parse(new File(getIdeaDir(name), XML_FILENAME));
 
             // reset old data.
             reset();
@@ -131,7 +131,7 @@ public class Idea {
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
 
             Source source = new DOMSource(document);
-            Result result = new StreamResult(new FileWriter(new File(getIdeaDir(), XML_FILENAME)));
+            Result result = new StreamResult(new FileWriter(new File(getIdeaDir(mName), XML_FILENAME)));
             transformer.transform(source, result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -154,7 +154,7 @@ public class Idea {
     }
 
     public String getIconPath() {
-        return new File(getIdeaDir(), getIcon()).getAbsolutePath();
+        return new File(getIdeaDir(mName), getIcon()).getAbsolutePath();
     }
 
     public String getName() {
@@ -207,8 +207,8 @@ public class Idea {
         return null;
     }
 
-    public String getIdeaDir() {
-        return new File(DATA_DIR, mName).getAbsolutePath();
+    public String getIdeaDir(String name) {
+        return new File(DATA_DIR, name).getAbsolutePath();
     }
 
     public static class Detail {
@@ -221,7 +221,7 @@ public class Idea {
         }
 
         public String getPicPath() {
-            return new File(mIdea.getIdeaDir(), mPic).getAbsolutePath();
+            return new File(mIdea.getIdeaDir(mIdea.mName), mPic).getAbsolutePath();
         }
 
         public void setPicPath(String mPicPath) {
