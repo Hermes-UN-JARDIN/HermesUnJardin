@@ -50,7 +50,10 @@ public class NavDrawer extends FrameLayout {
     private void initData() {
         mListAdapter = new DrawerListAdapter(mMainActivity);
         for (String name : HermesUnJardin.getApplication().getFilesDir().list()) {
-            mListAdapter.add(Idea.readFrom(name));
+            Idea idea = Idea.readFrom(name);
+            if (idea != null) {
+                mListAdapter.add(idea);
+            }
         }
     }
 

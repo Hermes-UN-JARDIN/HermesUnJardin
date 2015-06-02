@@ -1,5 +1,7 @@
 package com.hermes_un_jardin.hermesunjardin.model;
 
+import android.text.TextUtils;
+
 import com.hermes_un_jardin.hermesunjardin.HermesUnJardin;
 
 import org.w3c.dom.Document;
@@ -58,18 +60,14 @@ public class Idea {
     private List<Detail> mDetailList = new ArrayList<Detail>();
     private String mIcon;
 
-    public Idea(String name) {
-        mName = name;
-    }
-
     public static Idea readFrom(String name) {
-        Idea idea = new Idea(name);
-        idea.read();
+        Idea idea = new Idea();
+        idea.read(name);
 
-        return idea;
+        return !TextUtils.isEmpty(idea.mName) ? idea : null;
     }
 
-    public void read() {
+    public void read(String name) {
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document document = documentBuilder.parse(new File(getIdeaDir(), XML_FILENAME));
@@ -151,8 +149,8 @@ public class Idea {
         return mIcon;
     }
 
-    public void setIcon(String mIcoPath) {
-        this.mIcon = mIcoPath;
+    public void setIcon(String icoPath) {
+        this.mIcon = icoPath;
     }
 
     public String getIconPath() {
@@ -163,16 +161,16 @@ public class Idea {
         return mName;
     }
 
-    public void setName(String mName) {
-        this.mName = mName;
+    public void setName(String name) {
+        this.mName = name;
     }
 
     public String getDesc() {
         return mDesc;
     }
 
-    public void setDesc(String mDesc) {
-        this.mDesc = mDesc;
+    public void setDesc(String desc) {
+        this.mDesc = desc;
     }
 
     /**
