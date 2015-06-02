@@ -17,6 +17,8 @@ import java.util.List;
  */
 public class Animation {
 
+    /////////////////////   firework   ////////////////
+
     /**
      * @param view
      * @param text
@@ -95,6 +97,75 @@ public class Animation {
 
                     span.setColor(color);
                 }
+
+                try {
+                    setMethod.invoke(view, spannableString);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        valueAnimator.start();
+
+    }
+
+    //////////////////////   blur   ///////////////////////
+
+    /**
+     * You MUST set `android:hardwareAccelerated="false"` to the owner activity!
+     *
+     * @param view
+     * @param text
+     * @param from
+     * @param to
+     * @param startDelay
+     * @param duration
+     */
+    public static void blur(final TextView view, final String text, final double from, final double to, long startDelay, long duration) {
+        Method setMethod = null;
+        try {
+            setMethod = view.getClass().getDeclaredMethod("setText", CharSequence.class);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        Animation.blur(view, setMethod, text, from, to, startDelay, duration);
+    }
+
+    public static void blur(final ActionBar view, final String text, final double from, final double to, long startDelay, long duration) {
+        Method setMethod = null;
+        try {
+            setMethod = view.getClass().getDeclaredMethod("setTitle", CharSequence.class);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        Animation.blur(view, setMethod, text, from, to, startDelay, duration);
+    }
+
+    private static void blur(final Object view, final Method setMethod, final String text, final double from, final double to, long startDelay, long duration) {
+
+        //
+        final BlurSpan span = new BlurSpan();
+        final SpannableString spannableString = new SpannableString(text);
+        spannableString.setSpan(span, 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        //
+        try {
+            setMethod.invoke(view, spannableString);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //
+        ValueAnimator valueAnimator = new ValueAnimator().ofFloat((float) from, (float) to);
+        valueAnimator.setStartDelay(startDelay);
+        valueAnimator.setDuration(duration);
+        valueAnimator.setInterpolator(new AccelerateInterpolator());
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (Float) animation.getAnimatedValue();
+
+                span.setRadius(value);
 
                 try {
                     setMethod.invoke(view, spannableString);

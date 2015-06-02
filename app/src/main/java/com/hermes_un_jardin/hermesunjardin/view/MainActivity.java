@@ -158,6 +158,7 @@ public class MainActivity extends FragmentActivity implements MainActivityView {
     public void selectIdea(Idea idea) {
         // Change title
         Animation.firework(mActionBar, idea.getName(), Color.WHITE, 0, 1000);
+//        Animation.blur(mActionBar, idea.getName(), 15, 0.1, 0, 800);
 
         // Fill idea data
         // Change fragment
